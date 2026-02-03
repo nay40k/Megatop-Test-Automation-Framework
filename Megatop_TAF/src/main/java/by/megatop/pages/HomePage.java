@@ -20,7 +20,7 @@ public class HomePage {
     private final String HOME_URL = "https://megatop.by/";
 
     private final By COOKIE_ACCEPT_BUTTON = By.xpath("/html/body/div[1]/div/div[4]/div[1]/div/div[3]/div[3]/button[3]");
-    private final By MEN_CATEGORY_LINK = By.linkText("Мужчины");
+    private final By MEN_CATEGORY_LINK = By.xpath("//a[@href='/muzhchiny']");
     private final By REGION_CONFIRM_BUTTON = By.xpath("/html/body/div[3]/div[2]/div[1]/div/div/div[2]/button[1]");
 
     public HomePage() {
