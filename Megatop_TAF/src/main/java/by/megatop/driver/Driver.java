@@ -3,10 +3,10 @@ package by.megatop.driver;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class WebDriverSingleton {
+public class Driver {
     private static org.openqa.selenium.WebDriver instance;
 
-    private WebDriverSingleton() {
+    private Driver() {
     }
 
     public static synchronized WebDriver getInstance() {

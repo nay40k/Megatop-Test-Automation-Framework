@@ -1,7 +1,7 @@
 // src/main/java/by/megatop/BaseUiTest.java
 package by.megatop; // Убедись, что пакет правильный
 
-import by.megatop.driver.WebDriverSingleton;
+import by.megatop.driver.Driver;
 import by.megatop.pages.HomePage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,13 +14,13 @@ public abstract class BaseUiTest {
     @BeforeEach
     void setUp() {
         this.homePage = new HomePage();
-        WebDriverSingleton.getInstance().get(BASE_URL);
+        Driver.getInstance().get(BASE_URL);
         homePage.clickRegionConfirmButton();
         homePage.clickCookieAcceptButton();
     }
 
     @AfterEach
     void tearDown() {
-        WebDriverSingleton.close();
+        Driver.close();
     }
 }
