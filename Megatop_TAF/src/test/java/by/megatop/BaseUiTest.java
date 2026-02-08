@@ -1,28 +1,26 @@
-package by.megatop;
+// src/main/java/by/megatop/BaseUiTest.java
+package by.megatop; // Убедись, что пакет правильный
 
 import by.megatop.driver.WebDriver;
 import by.megatop.pages.HomePage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
-import java.util.ArrayList;
-import java.util.List;
+public abstract class BaseUiTest {
 
-public class BaseUiTest {
-
-    public HomePage homePage = new HomePage();
-    protected final List<AssertionError> softErrors = new ArrayList<>();
+    protected HomePage homePage;
+    public final String BASE_URL = "https://megatop.by/";
 
     @BeforeEach
-    void clickConfirmRegionAndCookieAcceptButtons() {
-        homePage.open();
+    void setUp() {
+        this.homePage = new HomePage();
+        WebDriver.getInstance().get(BASE_URL);
         homePage.clickRegionConfirmButton();
         homePage.clickCookieAcceptButton();
     }
 
     @AfterEach
-    void closeBrowser() {
+    void tearDown() {
         WebDriver.close();
     }
-
 }

@@ -1,3 +1,4 @@
+// src/main/java/by/megatop/pages/HomePage.java
 package by.megatop.pages;
 
 import by.megatop.driver.WebDriver;
@@ -10,12 +11,10 @@ import static by.megatop.enums.ClientCategory.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HomePage {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(HomePage.class); // Уточни имя класса
 
-    private final org.openqa.selenium.WebDriver driver;
-    private final WaitUtils waitUtils;
-
-    private final String HOME_URL = "https://megatop.by/"; //Либо в BaseClass, либо в файл property
+    private final org.openqa.selenium.WebDriver driver = WebDriver.getInstance();
+    private final WaitUtils waitUtils = new WaitUtils(driver);
 
     private final By COOKIE_ACCEPT_BUTTON = By.xpath("//button[normalize-space() = 'Согласен']");
     private final By MEN_CATEGORY_LINK = By.xpath("//a[@href='/muzhchiny']");
@@ -23,17 +22,9 @@ public class HomePage {
     private final By CHILDREN_CATEGORY_LINK = By.xpath("//a[@href='/deti']");
     private final By REGION_CONFIRM_BUTTON = By.xpath("//div[@class='modal__content']//button[not(contains(@class, 'btn--outlined'))]");
 
-    public HomePage() {
+    private final String SITE_TITLE = "Магазины обуви в Минске | Сеть обувных магазинов MEGATOP - обувь большого города. \uD83C\uDFE2\uD83C\uDFE6\uD83C\uDFEA";
 
-        this.driver = WebDriver.getInstance();
-        this.waitUtils = new WaitUtils(driver);
-    }
-
-    public HomePage open() { //вынести в BaseTest
-        driver.get(HOME_URL);
-        logger.info("Home page opened");
-        return this;
-    }
+    public HomePage() {}
 
     public void clickRegionConfirmButton() {
         try {
@@ -45,14 +36,18 @@ public class HomePage {
 
     public void clickCookieAcceptButton() {
         try {
-            waitUtils.clickWhenReady(COOKIE_ACCEPT_BUTTON); // Используем утилиту
+            waitUtils.clickWhenReady(COOKIE_ACCEPT_BUTTON);
         } catch (Exception e) {
             logger.warn("Cookie banner not found or not clickable.", e);
         }
     }
 
+    public void testHomePageTitle() {
+        assertEquals(SITE_TITLE, driver.getTitle(), "Заголовок домашней страницы не соответствует");
+        logger.info("Тест пройден: Заголовок сайта соответствует " + SITE_TITLE);
+    }
     public String getMenCategoryText() {
-        return waitUtils.getTextWhenVisible(MEN_CATEGORY_LINK); // Используем утилиту
+        return waitUtils.getTextWhenVisible(MEN_CATEGORY_LINK);
     }
 
     public void testMenCategoryName() {
@@ -60,7 +55,7 @@ public class HomePage {
     }
 
     public String getWomenCategoryText() {
-        return waitUtils.getTextWhenVisible(WOMEN_CATEGORY_LINK); // Используем утилиту
+        return waitUtils.getTextWhenVisible(WOMEN_CATEGORY_LINK);
     }
 
     public void testWomenCategoryName() {
@@ -68,7 +63,7 @@ public class HomePage {
     }
 
     public String getChildrenCategoryText() {
-        return waitUtils.getTextWhenVisible(CHILDREN_CATEGORY_LINK); // Используем утилиту
+        return waitUtils.getTextWhenVisible(CHILDREN_CATEGORY_LINK);
     }
 
     public void testChildrenCategoryName() {
@@ -81,6 +76,7 @@ public class HomePage {
             logger.error("Тест провален: Текст категории \"" + CHILDREN.getCategoryName() + "\" не совпадает!", e);
             throw e;
         }
+        logger.info("i: Логирование добавлено только для категории \"Дети\" исключительно для демонстрации логирования");
         logger.info("Тест пройден: Текст категории \"" + CHILDREN.getCategoryName() + "\" совпадает.");
     }
 }
