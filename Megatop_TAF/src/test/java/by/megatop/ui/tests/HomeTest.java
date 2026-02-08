@@ -1,10 +1,7 @@
 package by.megatop.ui.tests;
 
 import by.megatop.BaseUiTest;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 
 public class HomeTest extends BaseUiTest {
@@ -12,6 +9,7 @@ public class HomeTest extends BaseUiTest {
     @Test
     @DisplayName("Проверка заголовка главной страницы")
     @Tag("smoke")
+    @Order(2)
     void testHomePageTitle() {
         homePage.testHomePageTitle();
     }
@@ -19,6 +17,7 @@ public class HomeTest extends BaseUiTest {
     @Test
     @DisplayName("Проверка текстов категорий на главной странице")
     @Tag("smoke")
+    @Order(1)
     void testCategoriesText() {
         Assertions.assertAll(
                 () -> homePage.testMenCategoryName(),

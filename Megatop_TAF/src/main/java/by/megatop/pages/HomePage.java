@@ -1,7 +1,7 @@
 // src/main/java/by/megatop/pages/HomePage.java
 package by.megatop.pages;
 
-import by.megatop.driver.WebDriver;
+import by.megatop.driver.WebDriverSingleton;
 import by.megatop.utils.WaitUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class HomePage {
     private static final Logger logger = LogManager.getLogger(HomePage.class); // Уточни имя класса
 
-    private final org.openqa.selenium.WebDriver driver = WebDriver.getInstance();
+    private final org.openqa.selenium.WebDriver driver = WebDriverSingleton.getInstance();
     private final WaitUtils waitUtils = new WaitUtils(driver);
 
     private final By COOKIE_ACCEPT_BUTTON = By.xpath("//button[normalize-space() = 'Согласен']");

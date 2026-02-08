@@ -1,14 +1,15 @@
 package by.megatop.driver;
 
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class WebDriver {
+public class WebDriverSingleton {
     private static org.openqa.selenium.WebDriver instance;
 
-    private WebDriver() {
+    private WebDriverSingleton() {
     }
 
-    public static synchronized org.openqa.selenium.WebDriver getInstance() {
+    public static synchronized WebDriver getInstance() {
         if (instance == null) {
             instance = new ChromeDriver();
             instance.manage().window().maximize();
