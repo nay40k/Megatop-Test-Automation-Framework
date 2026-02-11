@@ -1,4 +1,3 @@
-// src/main/java/by/megatop/utils/UnicodeUtils.java
 package by.megatop.utils;
 
 public class UnicodeUtils {
