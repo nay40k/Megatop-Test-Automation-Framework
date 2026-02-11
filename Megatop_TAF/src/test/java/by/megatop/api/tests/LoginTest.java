@@ -1,50 +1,54 @@
 package by.megatop.api.tests;
 
 import by.megatop.api.UserAuthService;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
+import by.megatop.utils.TestDataHelper;
+import by.megatop.utils.UnicodeUtils;
+import io.restassured.response.Response;
+import org.junit.jupiter.api.*;
 
 public class LoginTest {
-    private static final Logger logger = LogManager.getLogger(LoginTest.class);
+    private final UserAuthService authService = new UserAuthService();
 
-    public UserAuthService userAuthService;
-
-    @BeforeEach
-    void setUp() {
-        userAuthService = new UserAuthService();
+    @Test
+    @DisplayName("API 1: Неверный телефон и пароль")
+    void testWrongCredentials() {
+        Response response = authService.login(TestDataHelper.generateFullPhoneNumber(), TestDataHelper.generatePassword());
+        verifyError(response, 422, "Вы ввели неверный номер");
     }
 
     @Test
-    @Disabled("Используется для отладки")
-    @DisplayName("Проверка распечатки ответа")
-    public void testResponsePrint() {
-        userAuthService.testPrintResponse();
+    @DisplayName("API 2: Телефон без пароля")
+    void testPhoneWithoutPassword() {
+        Response response = authService.login(TestDataHelper.generateFullPhoneNumber(), "");
+        verifyError(response, 422, "Вы ввели неверный номер");
     }
 
     @Test
-    @DisplayName("Проверка логина с неправильными телефоном и паролем")
-    public void test1() {
-        userAuthService.testLoginWithPhoneAndPassword();
+    @DisplayName("API 3: Пустое тело запроса")
+    void testEmptyBody() {
+        Response response = authService.loginWithEmptyBody();
+        verifyError(response, 500, "Server Error");
     }
 
     @Test
-    @DisplayName("Проверка логина с телефоном и пустым паролем")
-    public void test2() {
-        userAuthService.testLoginWithPhoneAndWithoutPassword();
-        logger.info("Проверка логина с телефоном и пустым паролем: ✅");
+    @DisplayName("API 4: Без поля email")
+    void testNoEmailField() {
+        Response response = authService.login(null, "123456");
+        verifyError(response, 500, "Server Error");
     }
 
     @Test
-    @DisplayName("Проверка логина без телефона и пароля")
-    public void test3() {
-        userAuthService.testLoginWithoutPhoneAndPassword();
+    @DisplayName("API 5: Без поля password")
+    void testNoPasswordField() {
+        Response response = authService.login("375251112233", null);
+        verifyError(response, 500, "Server Error");
     }
 
-    //TODO         Assertions.assertAll (для всех тестов)
-
+    private void verifyError(Response response, int expectedCode, String expectedMessage) {
+        String body = UnicodeUtils.decodeUnicodeEscapes(response.asString());
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(expectedCode, response.getStatusCode()),
+                () -> Assertions.assertTrue(body.contains(expectedMessage))
+        );
+    }
 }

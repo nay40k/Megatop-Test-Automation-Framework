@@ -5,8 +5,7 @@ import by.megatop.utils.WaitUtils;
 import org.openqa.selenium.By;
 
 public class MensHomePage {
-    private final WaitUtils waitUtils;
-
+    private final WaitUtils waitUtils = new WaitUtils(Driver.getInstance());
     public static final String MEN_URL = "https://megatop.by/muzhchiny";
 
     private final By HEADER_LOGIN_BUTTON = By.xpath("//div[contains(@class, 'login') and contains(text(), 'Вход')]");
@@ -14,10 +13,6 @@ public class MensHomePage {
     private final By PASSWORD_INPUT = By.xpath("//input[@type='password']");
     private final By SUBMIT_LOGIN_BUTTON = By.xpath("//button[contains(@class, 'btn') and contains(., 'Вход')]");
     private final By ERROR_MESSAGE = By.xpath("//div[contains(text(), 'неверный номер')]");
-
-    public MensHomePage() {
-        this.waitUtils = new WaitUtils(Driver.getInstance());
-    }
 
     public void open() {
         Driver.getInstance().get(MEN_URL);
@@ -28,18 +23,15 @@ public class MensHomePage {
     }
 
     public void fillLoginData(String phone, String password) {
-        var phoneElement = waitUtils.waitForVisibilityOfElementLocated(PHONE_INPUT);
-        phoneElement.click();
-        phoneElement.clear();
-        phoneElement.sendKeys(phone);
-
-        var passwordElement = waitUtils.waitForVisibilityOfElementLocated(PASSWORD_INPUT);
-        passwordElement.click();
-        passwordElement.clear();
-        passwordElement.sendKeys(password);
+        var phoneEl = waitUtils.waitForVisibilityOfElementLocated(PHONE_INPUT);
+        phoneEl.clear();
+        phoneEl.sendKeys(phone);
+        var passEl = waitUtils.waitForVisibilityOfElementLocated(PASSWORD_INPUT);
+        passEl.clear();
+        passEl.sendKeys(password);
     }
 
-    public void clickSubmitButton() {
+    public void clickSubmit() {
         waitUtils.clickWhenReady(SUBMIT_LOGIN_BUTTON);
     }
 
