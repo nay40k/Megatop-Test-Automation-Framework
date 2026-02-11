@@ -60,4 +60,28 @@ public class HomeTest extends BaseUiTest {
 
         logger.info("Тест пройден: Все тексты категорий корректны");
     }
+
+    @Test
+    @DisplayName("Проверка сообщения при поиске с недействительным запросом")
+    @Tag("search")
+    void testSearchWithInvalidTerm() {
+        logger.info("=== Тест: Проверка сообщения при поиске с недействительным запросом ===");
+
+        String invalidSearchTerm = "бессмысленноеслово123";
+        String expectedMessage = homePage.getExpectedNoProductsMessage();
+
+        logger.info("Поисковый запрос: '{}'", invalidSearchTerm);
+
+        homePage.openSearchModal();
+        homePage.performSearch(invalidSearchTerm);
+        String actualMessage = homePage.getNoProductsMessageText();
+
+        Assertions.assertEquals(
+                expectedMessage,
+                actualMessage,
+                String.format("Текст сообщения не совпадает.\nОжидалось: '%s'\nФактически: '%s'", expectedMessage, actualMessage)
+        );
+
+        logger.info("Тест пройден: Сообщение при отсутствии товаров корректно - '{}'", actualMessage);
+    }
 }
