@@ -1,5 +1,3 @@
-# Megatop-Test-Automation-Framework
-
 # Тестовая автоматизация для сайта MEGATOP.by
 
 ## Описание проекта
@@ -30,15 +28,17 @@
 
 src/
 ├── main/java/by/megatop/
-│ ├── api/ # API-тесты
-│ ├── driver/ # WebDriver Singleton
-│ ├── enums/ # Перечисления (ClientCategory)
-│ ├── pages/ # Page Object модели
-│ ├── ui/tests/ # UI-тесты
-│ ├── api/tests/ # API-тесты
-│ └── utils/ # Вспомогательные классы (WaitUtils, UnicodeUtils)
-└── resources/
-└── log4j2.xml # Конфигурация логирования
+│ ├── api/        # API-клиенты и сервисы
+│ ├── driver/     # WebDriver Singleton
+│ ├── enums/
+│ ├── pages/
+│ └── utils/
+├── test/java/by/megatop/
+│ ├── api/tests/
+│ └── ui/tests/
+└── main/resources/
+   └── log4j2.xml
+
 ```
 ---
 
