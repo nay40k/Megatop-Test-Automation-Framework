@@ -6,7 +6,6 @@ import org.openqa.selenium.By;
 
 public class MensHomePage {
     private final WaitUtils waitUtils;
-
     public static final String MEN_URL = "https://megatop.by/muzhchiny";
 
     private final By HEADER_LOGIN_BUTTON = By.xpath("//div[contains(@class, 'login') and contains(text(), 'Вход')]");
@@ -45,5 +44,9 @@ public class MensHomePage {
 
     public String getErrorMessageText() {
         return waitUtils.getTextWhenVisible(ERROR_MESSAGE);
+    }
+
+    public String getExpectedLoginErrorMessage() {
+        return "Вы ввели неверный номер телефона и/или пароль.";
     }
 }

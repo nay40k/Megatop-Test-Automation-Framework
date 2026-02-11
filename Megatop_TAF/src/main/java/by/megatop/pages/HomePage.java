@@ -7,15 +7,13 @@ import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 
 import static by.megatop.enums.ClientCategory.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HomePage {
-    private static final Logger logger = LogManager.getLogger(HomePage.class); // Уточни имя класса
-
+    private static final Logger logger = LogManager.getLogger(HomePage.class);
     private final org.openqa.selenium.WebDriver driver = Driver.getInstance();
     private final WaitUtils waitUtils = new WaitUtils(driver);
 
-    private final By COOKIE_ACCEPT_BUTTON = By.xpath("//button[normalize-space() = 'Согласен']");
+    private final By COOKIE_ACCEPT_BUTTON = By.xpath("//div[contains(@class, 'cookie')]//div[contains(@class, 'justify-end')]//button[last()]");
     private final By MEN_CATEGORY_LINK = By.xpath("//a[@href='/muzhchiny']");
     private final By WOMEN_CATEGORY_LINK = By.xpath("//a[@href='/zhenshchiny']");
     private final By CHILDREN_CATEGORY_LINK = By.xpath("//a[@href='/deti']");
@@ -23,59 +21,47 @@ public class HomePage {
 
     private final String SITE_TITLE = "Магазины обуви в Минске | Сеть обувных магазинов MEGATOP - обувь большого города. \uD83C\uDFE2\uD83C\uDFE6\uD83C\uDFEA";
 
-    public HomePage() {}
-
-    public void clickRegionConfirmButton() {
-        try {
-            waitUtils.clickWhenReady(REGION_CONFIRM_BUTTON);
-        } catch (Exception e) {
-            logger.warn("Region confirmation modal not found or not clickable.", e);
-        }
+    public void confirmRegion() {
+        logger.info("Подтверждение региона...");
+        waitUtils.clickWhenReady(REGION_CONFIRM_BUTTON);
     }
 
-    public void clickCookieAcceptButton() {
-        try {
-            waitUtils.clickWhenReady(COOKIE_ACCEPT_BUTTON);
-        } catch (Exception e) {
-            logger.warn("Cookie banner not found or not clickable.", e);
-        }
+    public void acceptCookies() {
+        logger.info("Принятие куки...");
+        waitUtils.clickWhenReady(COOKIE_ACCEPT_BUTTON);
     }
 
-    public void testHomePageTitle() {
-        assertEquals(SITE_TITLE, driver.getTitle(), "Заголовок домашней страницы не соответствует");
-        logger.info("Тест пройден: Заголовок сайта соответствует " + SITE_TITLE);
+    public String getPageTitle() {
+        String title = driver.getTitle();
+        logger.debug("Заголовок страницы: {}", title);
+        return title;
     }
+
+    public String getExpectedTitle() {
+        return SITE_TITLE;
+    }
+
     public String getMenCategoryText() {
         return waitUtils.getTextWhenVisible(MEN_CATEGORY_LINK);
     }
 
-    public void testMenCategoryName() {
-        assertEquals(MEN.getCategoryName(), getMenCategoryText(), "Текст категории \"" + MEN.getCategoryName() + "\" не совпадает!");
+    public String getExpectedMenCategoryText() {
+        return MEN.getCategoryName();
     }
 
     public String getWomenCategoryText() {
         return waitUtils.getTextWhenVisible(WOMEN_CATEGORY_LINK);
     }
 
-    public void testWomenCategoryName() {
-        assertEquals(WOMEN.getCategoryName(), getWomenCategoryText(), "Текст категории \"" + WOMEN.getCategoryName() + "\" не совпадает!");
+    public String getExpectedWomenCategoryText() {
+        return WOMEN.getCategoryName();
     }
 
     public String getChildrenCategoryText() {
         return waitUtils.getTextWhenVisible(CHILDREN_CATEGORY_LINK);
     }
 
-    public void testChildrenCategoryName() {
-        String expected = CHILDREN.getCategoryName();
-        String actual = getChildrenCategoryText();
-
-        try {
-            assertEquals(expected, actual, "Текст категории \"" + CHILDREN.getCategoryName() + "\" не совпадает!");
-        } catch (AssertionError e) {
-            logger.error("Тест провален: Текст категории \"" + CHILDREN.getCategoryName() + "\" не совпадает!", e);
-            throw e;
-        }
-        logger.info("i: Логирование добавлено только для категории \"Дети\" исключительно для демонстрации логирования");
-        logger.info("Тест пройден: Текст категории \"" + CHILDREN.getCategoryName() + "\" совпадает.");
+    public String getExpectedChildrenCategoryText() {
+        return CHILDREN.getCategoryName();
     }
 }
